@@ -17,12 +17,16 @@ In simpler terms, this system prioritizes quickly selecting new individual targe
 in a logical way. It's similar to the targeting system of 
 [Arma 3](https://store.steampowered.com/agecheck/app/107410).
 
+### More
+
+Other stuff is coming soon, like improved cockpit functionality.
+
 ## How to install
 
 - Install [BepInEx](https://docs.bepinex.dev/articles/user_guide/installation/index.html#where-to-download-bepinex).
 - Download ``MKMods.dll`` from the [releases page](https://github.com/mkualquiera/MKModsNO/releases).
 - Copy ``MKMods.dll`` into the BepInEx ``plugin`` folder (located in 
-``Nuclear Option/BepInEx/plugins).
+``Nuclear Option/BepInEx/plugins``).
 - Run the game.
 
 ## How to build
