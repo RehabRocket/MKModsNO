@@ -5,7 +5,7 @@ Implements various client-side improvements for the game
 
 ## Features
 
-### Improved targeting algorithm 
+### Improved target selection algorithm 
 
 Tapping the targeting key will unselect all existing targets and switch to the 
 next highest priority target. Holding the targeting key will add the next highest
