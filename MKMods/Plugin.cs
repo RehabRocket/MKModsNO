@@ -36,50 +36,6 @@ class CombatHUDPatch
         var markers = Traverse.Create(__instance).Field("markers")
             .GetValue<List<HUDUnitMarker>>();
 
-        // Compute distance between the target designator and each hud marker
-        // Plugin.Logger.LogInfo("Computing distances");
-
-        //List<float> distances = new List<float>();
-        //foreach (var marker in markers)
-        //{
-        //    try
-        //    {
-        //        var distance = FastMath.Distance(
-        //            __instance.targetDesignator.gameObject.transform.position,
-        //            marker.image.transform.position
-        //        );
-        //        distances.Add(distance);
-        //    }
-        //    catch (System.Exception e)
-        //    {
-        //        distances.Add(float.PositiveInfinity);
-        //        Plugin.Logger.LogError(e);
-        //    }
-        //}
-
-        //Plugin.Logger.LogInfo("Distances computed");
-
-        // Find the index of the closest marker
-        //var smallest = float.PositiveInfinity;
-        //var smallestIndex = -1;
-        //for (int i = 0; i < distances.Count; i++)
-        //{
-        //    if (distances[i] < smallest)
-        //    {
-        //        smallest = distances[i];
-        //        smallestIndex = i;
-        //    }
-        //}
-
-        // Log closest marker
-        //Plugin.Logger.LogInfo($"Closest marker: {smallestIndex} at {smallest}");
-
-        //Traverse.Create(__instance).Field("targetList")
-        //    .SetValue(new List<Unit> { markers[smallestIndex].unit });
-
-        //Plugin.Logger.LogInfo("CombatHUD.TargetSelect");
-
-
         // That worked, so now we will implement our actual targeting algorithm
         var eligibleTargets = markers
             .Where(marker =>
@@ -152,7 +108,7 @@ class CombatHUDPatch
         }
 
         // Debug log next index
-        Plugin.Logger.LogInfo($"Next target index: {nextTargetIndex}");
+        // Plugin.Logger.LogInfo($"Next target index: {nextTargetIndex}");
 
         // if the new index is still -1, no eligible targets were found
         if (nextTargetIndex == -1)
