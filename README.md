@@ -1,4 +1,4 @@
-# MKModsNO
+# MKMods
 
 Implements various client-side improvements for the game 
 [Nuclear Option](https://store.steampowered.com/app/2168680/Nuclear_Option/).
