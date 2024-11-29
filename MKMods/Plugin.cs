@@ -2,9 +2,11 @@
 using System.Linq;
 using System.Runtime.InteropServices;
 using BepInEx;
+using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
 using UnityEngine;
+using UnityEngine.Bindings;
 
 namespace MKMods;
 
@@ -13,8 +15,40 @@ public class Plugin : BaseUnityPlugin
 {
     internal static new ManualLogSource Logger;
 
+    public static ConfigEntry<bool> alternativeTargeting;
+    public static ConfigEntry<bool> nextTargetOrder;
+    public static ConfigEntry<float> targetSelectionThreshold;
+    public static ConfigEntry<bool> ignoreAlreadySelected;
+
     private void Awake()
     {
+        alternativeTargeting = Config.Bind(
+            "General",
+            "AlternativeTargeting",
+            true,
+            "Use the alternative target selection algorithm."
+        );
+        nextTargetOrder = Config.Bind(
+            "Target selection",
+            "NextTargetOrder",
+            false,
+            "Select the next target rather than the highest priority one."
+        );
+        targetSelectionThreshold = Config.Bind(
+            "Target selection",
+            "TargetSelectionThreshold",
+            200f,
+            "The maximum distance from the target designator to consider a target."
+        );
+        ignoreAlreadySelected = Config.Bind(
+            "Target selection",
+            "IgnoreAlreadySelected",
+            false,
+            "In NextTargetOrder false, always select the highest priority target even if it is already selected."
+        );
+
+
+
         // Plugin startup logic
         Logger = base.Logger;
         Logger.LogInfo($"Plugin mkmods is loaded!");
@@ -33,6 +67,11 @@ class CombatHUDPatch
     static bool Prefix(CombatHUD __instance, bool paint)
     {
 
+        if (!Plugin.alternativeTargeting.Value)
+        {
+            return true;
+        }
+
         var markers = Traverse.Create(__instance).Field("markers")
             .GetValue<List<HUDUnitMarker>>();
 
@@ -47,7 +86,7 @@ class CombatHUDPatch
                 && FastMath.Distance(
                     __instance.targetDesignator.gameObject.transform.position,
                     marker.image.transform.position
-                ) < 200
+                ) < Plugin.targetSelectionThreshold.Value
             ).ToList();
 
         // short circuit if there are no eligible targets
@@ -86,23 +125,51 @@ class CombatHUDPatch
         }
 
         var nextTargetIndex = -1;
-        if (!paint || targetList.Count == 0)
+
+        if (Plugin.nextTargetOrder.Value)
         {
-            // The next target will be the next one in the list
-            nextTargetIndex = (currentTargetIndex + 1) % eligibleTargets.Count;
+            if (!paint || targetList.Count == 0)
+            {
+                // The next target will be the next one in the list
+                nextTargetIndex = (currentTargetIndex + 1) % eligibleTargets.Count;
+            }
+            else
+            {
+                // The next target will be the next one in the list, as long as it 
+                // is not already selected
+
+                for (int i = 1; i < eligibleTargets.Count + 1; i++)
+                {
+                    var potentialTargetIndex = (currentTargetIndex + i)
+                        % eligibleTargets.Count;
+                    if (!targetList.Contains(
+                        eligibleTargets[potentialTargetIndex].unit
+                    ))
+                    {
+                        nextTargetIndex = potentialTargetIndex;
+                        break;
+                    }
+                }
+            }
         }
         else
         {
-            // The next target will be the next one in the list, as long as it 
-            // is not already selected
-
-            for (int i = 1; i < eligibleTargets.Count + 1; i++)
+            if ((!paint || targetList.Count == 0) && Plugin.ignoreAlreadySelected.Value)
             {
-                var potentialTargetIndex = (currentTargetIndex + i) % eligibleTargets.Count;
-                if (!targetList.Contains(eligibleTargets[potentialTargetIndex].unit))
+                // The index will be the highest priority target
+                nextTargetIndex = 0;
+            }
+            else
+            {
+                // The index will be the highest priority target that is not already 
+                // selected
+                for (int i = 0; i < eligibleTargets.Count; i++)
                 {
-                    nextTargetIndex = potentialTargetIndex;
-                    break;
+                    if (!targetList.Contains(eligibleTargets[i].unit))
+                    {
+                        nextTargetIndex = i;
+                        break;
+                    }
                 }
             }
         }
