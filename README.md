@@ -20,6 +20,7 @@ in a logical way. It's similar to the targeting system of
 ## How to install
 
 - Install [BepInEx](https://docs.bepinex.dev/articles/user_guide/installation/index.html#where-to-download-bepinex).
+- Download ``MKMods.dll`` from the [releases page](https://github.com/mkualquiera/MKModsNO/releases).
 - Copy ``MKMods.dll`` into the BepInEx ``plugin`` folder (located in 
 ``Nuclear Option/BepInEx/plugins).
 - Run the game.
