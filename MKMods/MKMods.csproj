@@ -39,6 +39,9 @@
     <Reference Include="Mirage">
       <HintPath>$(GameDirectory)/NuclearOption_Data/Managed/Mirage.dll</HintPath>
     </Reference>
+    <Reference Include="Rewired_Core">
+      <HintPath>$(GameDirectory)/NuclearOption_Data/Managed/Rewired_Core.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <!--Automatically copy MKMods.dll to game plugins-->

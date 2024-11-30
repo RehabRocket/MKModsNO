@@ -13,6 +13,7 @@ pkgs.mkShell {
   buildInputs = [
     pkgs.dotnet-sdk
     pkgs.avalonia-ilspy
+    pkgs.unityhub
   ];
   shellHook = ''
   echo "Honk"

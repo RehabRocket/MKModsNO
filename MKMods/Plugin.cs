@@ -10,7 +10,7 @@ using UnityEngine.Bindings;
 
 namespace MKMods;
 
-[BepInPlugin("xyz.huestudios.mk.mkmods", "MK Mods", "1.0")]
+[BepInPlugin("xyz.huestudios.mk.mkmods", "MK Mods", "1.1")]
 public class Plugin : BaseUnityPlugin
 {
     internal static new ManualLogSource Logger;
@@ -19,6 +19,7 @@ public class Plugin : BaseUnityPlugin
     public static ConfigEntry<bool> nextTargetOrder;
     public static ConfigEntry<float> targetSelectionThreshold;
     public static ConfigEntry<bool> ignoreAlreadySelected;
+    public static ConfigEntry<bool> dynamicWeaponSelection;
 
     private void Awake()
     {
@@ -45,6 +46,13 @@ public class Plugin : BaseUnityPlugin
             "IgnoreAlreadySelected",
             false,
             "In NextTargetOrder false, always select the highest priority target even if it is already selected."
+        );
+
+        dynamicWeaponSelection = Config.Bind(
+            "Weapon selection",
+            "DynamicWeaponSelection",
+            true,
+            "Enable the dynamic weapon selection menu."
         );
 
 
