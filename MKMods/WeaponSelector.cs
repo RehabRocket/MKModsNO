@@ -13,58 +13,6 @@ using UnityEngine.UIElements.StyleSheets;
 
 namespace MKMods;
 
-class LineUtility
-{
-    // Class that makes it easy to draw lines by creating a gameobject
-    // with a 1px wide Image because unity is too stupid to have a line
-    // primitive
-
-    // The line starts being a pixel
-    public static GameObject CreateLine(Color color, float thickness = 1)
-    {
-        var line = new GameObject("Line");
-        var image = line.AddComponent<Image>();
-        image.color = color;
-        image.rectTransform.sizeDelta = new Vector2(thickness, 1);
-
-        // Set the pivot to the bottom center
-        image.rectTransform.pivot = new Vector2(0.5f, 0);
-
-        return line;
-    }
-
-    // Update the line to be between two points
-    public static void UpdateLine(GameObject line, Vector2 start, Vector2 end)
-    {
-        var rectTransform = line.GetComponent<RectTransform>();
-
-        //var width = end.x - start.x;
-        //var height = end.y - start.y;
-
-        //rectTransform.sizeDelta = new Vector2(
-        //    Mathf.Sqrt(width * width + height * height),
-        //    1
-        //);
-
-        //rectTransform.anchoredPosition = (start + end) / 2;
-
-        //var angle = Mathf.Atan2(height, width) * Mathf.Rad2Deg;
-        //rectTransform.localEulerAngles = new Vector3(0, 0, angle);
-
-        // Better algo: set pos to start, set localscale to
-        // one + up * (diff.magnitude * (1080/(screen.height)) - 8f)
-        // idk why, I took it from the game's code
-        line.transform.position = start;
-        var diff = end - start;
-        line.transform.localScale = Vector3.one
-            + Vector3.up * (diff.magnitude * (1080f / (float)Screen.height) - 8f);
-
-        // Set the rotation to the angle between the two points
-        var z = (0f - Mathf.Atan2(diff.x, diff.y)) * Mathf.Rad2Deg;
-
-        line.transform.eulerAngles = new Vector3(0, 0, z);
-    }
-}
 
 public static class RectTransformExtensions
 {

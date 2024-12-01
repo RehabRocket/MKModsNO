@@ -25,6 +25,13 @@ for easier visualization of where each weapon is mounted onto the plane.
 
 ![Dynamic loadout selection example](https://github.com/mkualquiera/MKModsNO/blob/main/images/dls.png?raw=true)
 
+### HUD notch line
+
+Displays a red line on the HUD that correspond to the notching direction for radar
+missiles.
+
+![HUD notch line example](https://github.com/mkualquiera/MKModsNO/blob/main/images/notchline.png?raw=true)
+
 ### More
 
 Other stuff is coming soon, like improved cockpit functionality.

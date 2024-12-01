@@ -20,6 +20,7 @@ public class Plugin : BaseUnityPlugin
     public static ConfigEntry<float> targetSelectionThreshold;
     public static ConfigEntry<bool> ignoreAlreadySelected;
     public static ConfigEntry<bool> dynamicWeaponSelection;
+    public static ConfigEntry<bool> hudNotchLine;
 
     private void Awake()
     {
@@ -53,6 +54,13 @@ public class Plugin : BaseUnityPlugin
             "DynamicWeaponSelection",
             true,
             "Enable the dynamic weapon selection menu."
+        );
+
+        hudNotchLine = Config.Bind(
+            "HUD",
+            "HudNotchLine",
+            true,
+            "Display a notch line on the HUD."
         );
 
 
