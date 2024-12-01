@@ -23,6 +23,8 @@ The plane/loadout selection menu now shows a the weapon selection dropdown as a
 floating UI item over each hardpoint, as well as a line pointing to it. This allows
 for easier visualization of where each weapon is mounted onto the plane.
 
+![Dynamic loadout selection example](https://github.com/mkualquiera/MKModsNO/blob/main/images/dls.png?raw=true)
+
 ### More
 
 Other stuff is coming soon, like improved cockpit functionality.
