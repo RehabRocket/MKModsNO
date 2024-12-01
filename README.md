@@ -17,6 +17,12 @@ In simpler terms, this system prioritizes quickly selecting new individual targe
 in a logical way. It's similar to the targeting system of 
 [Arma 3](https://store.steampowered.com/agecheck/app/107410).
 
+### Dynamic loadout selection
+
+The plane/loadout selection menu now shows a the weapon selection dropdown as a
+floating UI item over each hardpoint, as well as a line pointing to it. This allows
+for easier visualization of where each weapon is mounted onto the plane.
+
 ### More
 
 Other stuff is coming soon, like improved cockpit functionality.
