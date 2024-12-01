@@ -37,6 +37,12 @@ Other stuff is coming soon, like improved cockpit functionality.
 ``Nuclear Option/BepInEx/plugins``).
 - Run the game.
 
+### Configs
+
+This mod supports various config settings like disabling each feature and finetuning
+some values. Use the [BepInEx configuration manager](https://github.com/BepInEx/BepInEx.ConfigurationManager) 
+to modify these. 
+
 ## How to build
 
 Building was done in nixos using the provided ``shell.nix`` using the ``dotnet build``
@@ -44,3 +50,4 @@ Building was done in nixos using the provided ``shell.nix`` using the ``dotnet b
 projects anyway.
 
 Make sure to change the game path in ``MKMods.csproj``.
+
