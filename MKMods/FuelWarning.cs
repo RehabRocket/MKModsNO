@@ -26,6 +26,7 @@ class FuelWarningGlobals
     public static GameObject fuelTimeLabel;
 
     public static bool initialized = false;
+    public static float initTimer = float.PositiveInfinity;
 
     public static void Initialize()
     {
@@ -56,6 +57,10 @@ public class FuelWarningRefreshPatch
 
         if (!FuelWarningGlobals.initialized)
         {
+            if (Time.timeSinceLevelLoad - FuelWarningGlobals.initTimer < 3)
+            {
+                return;
+            }
             // See if we already have a child called fuelTime
             GameObject fuelTimeObj = null;
 
@@ -81,6 +86,12 @@ public class FuelWarningRefreshPatch
                     }
                 }
 
+                if (fuelLabel == null)
+                {
+                    Plugin.Logger.LogError("Could not find fuelLabel");
+                    return;
+                }
+
                 fuelTimeObj = GameObject.Instantiate(fuelLabel, __instance.transform);
 
                 fuelTimeObj.name = "fuelTime";
@@ -92,9 +103,10 @@ public class FuelWarningRefreshPatch
                 );
             }
 
-            FuelWarningGlobals.fuelTimeLabel.GetComponent<Text>().text = "(...)";
-
             FuelWarningGlobals.fuelTimeLabel = fuelTimeObj;
+            FuelWarningGlobals.fuelTimeLabel.GetComponent<Text>().text = "(...)";
+            FuelWarningGlobals.initialized = true;
+
         }
 
         if (Time.timeSinceLevelLoad - FuelWarningGlobals.lastReading <
@@ -160,5 +172,6 @@ public class FuelWarningInitializePatch
         FuelWarningGlobals.lastFuelAmount = aircraft.GetFuelLevel();
         FuelWarningGlobals.lastReading = Time.timeSinceLevelLoad;
         FuelWarningGlobals.initialized = false;
+        FuelWarningGlobals.initTimer = Time.timeSinceLevelLoad;
     }
 }
