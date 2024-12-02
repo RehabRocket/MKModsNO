@@ -25,6 +25,8 @@ class FuelWarningGlobals
 
     public static GameObject fuelTimeLabel;
 
+    public static bool initialized = false;
+
     public static void Initialize()
     {
         if (!Plugin.fuelWarnings.Value)
@@ -50,6 +52,49 @@ public class FuelWarningRefreshPatch
         if (!Plugin.fuelWarnings.Value)
         {
             return;
+        }
+
+        if (!FuelWarningGlobals.initialized)
+        {
+            // See if we already have a child called fuelTime
+            GameObject fuelTimeObj = null;
+
+            foreach (Transform child in __instance.transform)
+            {
+                if (child.name == "fuelTime")
+                {
+                    fuelTimeObj = child.gameObject;
+                    break;
+                }
+            }
+
+            // If we don't have it, clone fuelLabel
+            if (fuelTimeObj == null)
+            {
+                GameObject fuelLabel = null;
+                foreach (Transform child in __instance.transform)
+                {
+                    if (child.name == "fuelLabel")
+                    {
+                        fuelLabel = child.gameObject;
+                        break;
+                    }
+                }
+
+                fuelTimeObj = GameObject.Instantiate(fuelLabel, __instance.transform);
+
+                fuelTimeObj.name = "fuelTime";
+                // Move it down a bit
+                var currentPos = fuelTimeObj.GetComponent<RectTransform>().anchoredPosition;
+                fuelTimeObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(
+                    currentPos.x,
+                    currentPos.y - 20
+                );
+            }
+
+            //FuelWarningGlobals.fuelTimeLabel.GetComponent<Text>().text = "(...)";
+
+            FuelWarningGlobals.fuelTimeLabel = fuelTimeObj;
         }
 
         if (Time.timeSinceLevelLoad - FuelWarningGlobals.lastReading <
@@ -106,45 +151,6 @@ public class FuelWarningInitializePatch
 
         FuelWarningGlobals.lastFuelAmount = aircraft.GetFuelLevel();
         FuelWarningGlobals.lastReading = Time.timeSinceLevelLoad;
-
-        // See if we already have a child called fuelTime
-        GameObject fuelTime = null;
-
-        foreach (Transform child in __instance.transform)
-        {
-            if (child.name == "fuelTime")
-            {
-                fuelTime = child.gameObject;
-                break;
-            }
-        }
-
-        // If we don't have it, clone fuelLabel
-        if (fuelTime == null)
-        {
-            GameObject fuelLabel = null;
-            foreach (Transform child in __instance.transform)
-            {
-                if (child.name == "fuelLabel")
-                {
-                    fuelLabel = child.gameObject;
-                    break;
-                }
-            }
-
-            fuelTime = GameObject.Instantiate(fuelLabel, __instance.transform);
-
-            fuelTime.name = "fuelTime";
-            // Move it down a bit
-            var currentPos = fuelTime.GetComponent<RectTransform>().anchoredPosition;
-            fuelTime.GetComponent<RectTransform>().anchoredPosition = new Vector2(
-                currentPos.x,
-                currentPos.y - 20
-            );
-        }
-
-        FuelWarningGlobals.fuelTimeLabel.GetComponent<Text>().text = "(...)";
-
-        FuelWarningGlobals.fuelTimeLabel = fuelTime;
+        FuelWarningGlobals.initialized = false;
     }
 }
