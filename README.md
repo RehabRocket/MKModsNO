@@ -35,7 +35,7 @@ missiles.
 ### Audible missile warnings
 
 Plays a warning sound when a missile is locked onto the player's plane. The specific 
-sound played corresponds to the countermesure to the type of missile.
+sound played corresponds to the countermeasure to the type of missile.
 
 - IR: "Flare"
 - ARH, SARH: "Notch"
