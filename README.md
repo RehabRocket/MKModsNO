@@ -48,7 +48,7 @@ Displays the remaining fuel time in the HUD, plays a "low fuel" warning sound
 when the fuel is below 5 minutes, and a "bingo fuel" warning sound when the fuel
 is below 1 minute.
 
-![Fuel time example](https://github.com/mkualquiera/MKModsNO/blob/main/images/notchline.png?raw=true)
+![Fuel time example](https://github.com/mkualquiera/MKModsNO/blob/main/images/fueltime.png?raw=true)
 
 ### More
 
