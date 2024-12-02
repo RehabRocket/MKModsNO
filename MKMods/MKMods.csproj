@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>MKMods</AssemblyName>
     <Product>Various client-side improvements.</Product>
-    <Version>1.4.3</Version>
+    <Version>1.4.6</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <RestoreAdditionalProjectSources>
@@ -72,7 +72,11 @@
     <MakeDir Directories="$(ZipOutputPath)" />
     
     <!-- Create Zip Archive -->
-    <Exec Command="zip -r '$(ZipOutputPath)/MKMods_v$(Version).zip' '$(PluginDeploymentDirectory)'" />
+    <Exec Command="cd &quot;$(PluginDeploymentDirectory)/../&quot; &amp;&amp; zip -r &quot;MKMods_v$(Version).zip&quot; MKMods" />
+
+    <!-- Move Zip Archive to Output Directory -->
+    <Move SourceFiles="$(PluginDeploymentDirectory)/../MKMods_v$(Version).zip" 
+          DestinationFolder="$(ZipOutputPath)" />
   </Target>
 
   <!-- Ensure Assets are included in the project if they exist -->

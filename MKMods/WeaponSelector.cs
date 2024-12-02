@@ -242,14 +242,22 @@ class WeaponSelectorUpdatePatch
 
             if (!alreadyInitializedPositions)
             {
-                var multiplier = new Vector2(1.5f, 1.5f);
+                var multiplier = new Vector2(1f, 1f);
                 if (i % 2 == 1)
                 {
-                    multiplier = new Vector2(1.5f, -1.5f);
+                    multiplier = new Vector2(1f, -1f);
                 }
+
+                multiplier *= 1080f / 4.0f;
+                var direction = (targetCanvasPosition - new Vector2(canvasRect.width / 2.0f,
+                    canvasRect.height / 2.0f));
+
+                direction.Normalize();
+
+                direction = direction * multiplier;
+
                 selectorObject.GetComponent<RectTransform>().anchoredPosition
-                    = (targetCanvasPosition - new Vector2(canvasRect.width / 2.0f,
-                    canvasRect.height / 2.0f)) * multiplier + new Vector2(canvasRect.width / 2.0f,
+                    = direction + new Vector2(canvasRect.width / 2.0f,
                     canvasRect.height / 2.0f);
             }
 
