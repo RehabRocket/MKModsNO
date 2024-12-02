@@ -92,7 +92,7 @@ public class FuelWarningRefreshPatch
                 );
             }
 
-            //FuelWarningGlobals.fuelTimeLabel.GetComponent<Text>().text = "(...)";
+            FuelWarningGlobals.fuelTimeLabel.GetComponent<Text>().text = "(...)";
 
             FuelWarningGlobals.fuelTimeLabel = fuelTimeObj;
         }
@@ -123,8 +123,16 @@ public class FuelWarningRefreshPatch
 
         var fuelMinutes = Mathf.FloorToInt(fuelTime / 60f);
 
-        // Display fuel time
-        FuelWarningGlobals.fuelTimeLabel.GetComponent<Text>().text = $"({fuelMinutes}m)";
+        if (fuelTime < float.PositiveInfinity)
+        {
+            // Display fuel time
+            FuelWarningGlobals.fuelTimeLabel.GetComponent<Text>().text = $"({fuelMinutes}m)";
+        }
+        else
+        {
+            FuelWarningGlobals.fuelTimeLabel.GetComponent<Text>().text = "(...)";
+        }
+
 
         if (fuelTime < FuelWarningGlobals.bingoFuelTime)
         {
