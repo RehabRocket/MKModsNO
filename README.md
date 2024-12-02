@@ -45,8 +45,8 @@ sound played corresponds to the countermeasure to the type of missile.
 ### Fuel time and low fuel warning
 
 Displays the remaining fuel time in the HUD, plays a "low fuel" warning sound
-when the fuel is below 5 minutes, and a "bingo fuel" warning sound when the fuel
-is below 1 minute.
+when the fuel is below 7 minutes, and a "bingo fuel" warning sound when the fuel
+is below 3 minute.
 
 ![Fuel time example](https://github.com/mkualquiera/MKModsNO/blob/main/images/fueltime.png?raw=true)
 

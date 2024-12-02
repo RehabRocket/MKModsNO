@@ -88,14 +88,14 @@ public class Plugin : BaseUnityPlugin
         fuelWarningMinutes = Config.Bind(
             "Warnings",
             "FuelWarningMinutes",
-            5f,
+            7f,
             "The number of minutes of fuel remaining to trigger a fuel warning."
         );
 
         bingoFuelMinutes = Config.Bind(
             "Warnings",
             "BingoFuelMinutes",
-            1f,
+            3f,
             "The number of minutes of fuel remaining to trigger a bingo fuel warning."
         );
 
