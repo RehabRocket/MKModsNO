@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>MKMods</AssemblyName>
     <Product>Various client-side improvements.</Product>
-    <Version>1.4.2</Version>
+    <Version>1.4.3</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <RestoreAdditionalProjectSources>
@@ -57,6 +57,10 @@
     
     <!-- Copy DLL to MKMods directory -->
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" 
+          DestinationFolder="$(PluginDeploymentDirectory)" />
+
+    <!-- Copy PDB to MKMods directory -->
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).pdb" 
           DestinationFolder="$(PluginDeploymentDirectory)" />
     
     <!-- Copy Assets folder to MKMods directory -->

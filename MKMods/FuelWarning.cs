@@ -135,14 +135,26 @@ public class FuelWarningRefreshPatch
 
         var fuelMinutes = Mathf.FloorToInt(fuelTime / 60f);
 
-        if (fuelTime < float.PositiveInfinity)
+        try
         {
-            // Display fuel time
-            FuelWarningGlobals.fuelTimeLabel.GetComponent<Text>().text = $"({fuelMinutes}m)";
+            if (fuelTime < float.PositiveInfinity)
+            {
+                // Display fuel time
+                FuelWarningGlobals.fuelTimeLabel.GetComponent<Text>().text = $"({fuelMinutes}m)";
+            }
+            else
+            {
+
+                FuelWarningGlobals.fuelTimeLabel.GetComponent<Text>().text = "(...)";
+
+            }
         }
-        else
+        catch (System.Exception e)
         {
-            FuelWarningGlobals.fuelTimeLabel.GetComponent<Text>().text = "(...)";
+            Plugin.Logger.LogError(e.ToString());
+            FuelWarningGlobals.initialized = false;
+            FuelWarningGlobals.fuelTimeLabel = null;
+            FuelWarningGlobals.initTimer = Time.timeSinceLevelLoad;
         }
 
 
@@ -159,16 +171,39 @@ public class FuelWarningRefreshPatch
     }
 }
 
-[HarmonyPatch(typeof(FuelGauge), "Initialize")]
-public class FuelWarningInitializePatch
+
+[HarmonyPatch(typeof(FlightHud), "OnDestroy")]
+class FuelFlightHudPatchOnDestroy
 {
-    public static void Postfix(FuelGauge __instance, ref Aircraft aircraft)
+    static void Prefix(FlightHud __instance)
     {
         if (!Plugin.fuelWarnings.Value)
         {
             return;
         }
 
+        if (FuelWarningGlobals.fuelTimeLabel != null)
+        {
+            GameObject.Destroy(FuelWarningGlobals.fuelTimeLabel);
+        }
+        FuelWarningGlobals.fuelTimeLabel = null;
+        FuelWarningGlobals.initialized = false;
+        FuelWarningGlobals.initTimer = float.PositiveInfinity;
+    }
+}
+
+[HarmonyPatch(typeof(FuelGauge), "Initialize")]
+public class FuelWarningInitializePatch
+{
+    public static void Postfix(ref Aircraft aircraft)
+    {
+
+        if (!Plugin.fuelWarnings.Value)
+        {
+            return;
+        }
+
+        FuelWarningGlobals.fuelTimeLabel = null;
         FuelWarningGlobals.lastFuelAmount = aircraft.GetFuelLevel();
         FuelWarningGlobals.lastReading = Time.timeSinceLevelLoad;
         FuelWarningGlobals.initialized = false;
