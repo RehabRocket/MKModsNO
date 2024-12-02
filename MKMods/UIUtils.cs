@@ -1,6 +1,9 @@
 
 
+using System.IO;
+using HarmonyLib;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace MKMods;
@@ -58,5 +61,70 @@ class MaskUtility
         maskComponent.showMaskGraphic = false;
 
         return mask;
+    }
+}
+
+class InterfaceAudio
+{
+    // Class that makes it easy to play audio clips
+    public static void PlayOneShotV(AudioClip clip, float volume = 1)
+    {
+        //SoundManager.PlayInterfaceOneShot(clip);
+
+        var interfaceSource = Traverse.Create(SoundManager.i)
+            .Field("interfaceSource").GetValue<AudioSource>();
+
+        interfaceSource.PlayOneShot(clip, volume);
+    }
+}
+
+/*
+foreach (var kvp in seekerToAudioPath)
+        {
+            var actualPath = Path.Combine(Plugin.assetsPath, kvp.Value);
+            Plugin.Logger.LogInfo($"Loading {actualPath}");
+            using (var uwr = UnityWebRequestMultimedia.GetAudioClip(
+                $"file://{actualPath}", AudioType.MPEG))
+            {
+                uwr.SendWebRequest();
+                while (!uwr.isDone) { }
+                if (uwr.result == UnityWebRequest.Result.Success)
+                {
+                    var audioClip = DownloadHandlerAudioClip.GetContent(uwr);
+                    seekerToAudioClip[kvp.Key] = audioClip;
+                    Plugin.Logger.LogInfo($"Loaded {actualPath}");
+                }
+                else
+                {
+                    Plugin.Logger.LogError($"Failed to load audio clip from {actualPath}: {uwr.error}");
+                }
+            }
+        }
+
+*/
+
+class AudioLoading
+{
+    public static AudioClip LoadAudio(string path)
+    {
+        var actualPath = Path.Combine(Plugin.assetsPath, path);
+        Plugin.Logger.LogInfo($"Loading {actualPath}");
+        using (var uwr = UnityWebRequestMultimedia.GetAudioClip(
+            $"file://{actualPath}", AudioType.MPEG))
+        {
+            uwr.SendWebRequest();
+            while (!uwr.isDone) { }
+            if (uwr.result == UnityWebRequest.Result.Success)
+            {
+                var audioClip = DownloadHandlerAudioClip.GetContent(uwr);
+                Plugin.Logger.LogInfo($"Loaded {actualPath}");
+                return audioClip;
+            }
+            else
+            {
+                Plugin.Logger.LogError($"Failed to load audio clip from {actualPath}: {uwr.error}");
+                return null;
+            }
+        }
     }
 }

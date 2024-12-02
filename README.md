@@ -32,6 +32,24 @@ missiles.
 
 ![HUD notch line example](https://github.com/mkualquiera/MKModsNO/blob/main/images/notchline.png?raw=true)
 
+### Audible missile warnings
+
+Plays a warning sound when a missile is locked onto the player's plane. The specific 
+sound played corresponds to the countermesure to the type of missile.
+
+- IR: "Flare"
+- ARH, SARH: "Notch"
+- ARM: "Radar"
+- Optical: "Hide"
+
+### Fuel time and low fuel warning
+
+Displays the remaining fuel time in the HUD, plays a "low fuel" warning sound
+when the fuel is below 5 minutes, and a "bingo fuel" warning sound when the fuel
+is below 1 minute.
+
+![Fuel time example](https://github.com/mkualquiera/MKModsNO/blob/main/images/notchline.png?raw=true)
+
 ### More
 
 Other stuff is coming soon, like improved cockpit functionality.

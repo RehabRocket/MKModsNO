@@ -129,7 +129,7 @@ class FlightHudPatchOnDestroy
         {
             return;
         }
-        Plugin.Logger.LogInfo("HUDNotchLine OnDestroy");
+        //Plugin.Logger.LogInfo("HUDNotchLine OnDestroy");
         FlightHudPatchGlobals.mapNotchToLine.Clear();
     }
 }
@@ -143,7 +143,7 @@ class ThreatItemFoundIconPatch
         {
             return;
         }
-        Plugin.Logger.LogInfo("HUDNotchLine FoundIcon");
+        //Plugin.Logger.LogInfo("HUDNotchLine FoundIcon");
         // See if it has a notch line
         var notchLine = Traverse.Create(__instance).Field("notchLine")
             .GetValue<GameObject>();
@@ -173,7 +173,7 @@ class ThreatItemOnDisablePatch
         {
             return;
         }
-        Plugin.Logger.LogInfo("HUDNotchLine OnDisable");
+        //Plugin.Logger.LogInfo("HUDNotchLine OnDisable");
         // See if it has a notch line
         var notchLine = Traverse.Create(__instance).Field("notchLine")
             .GetValue<GameObject>();
@@ -220,7 +220,7 @@ class ThreatItemOnDestroyPatch
         {
             return;
         }
-        Plugin.Logger.LogInfo("HUDNotchLine OnDestroy");
+        //Plugin.Logger.LogInfo("HUDNotchLine OnDestroy");
         // See if it has a notch line
         var notchLine = Traverse.Create(__instance).Field("notchLine")
             .GetValue<GameObject>();

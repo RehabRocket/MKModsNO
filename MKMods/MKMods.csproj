@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>MKMods</AssemblyName>
     <Product>Various client-side improvements.</Product>
-    <Version>1.0.0</Version>
+    <Version>1.4.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <RestoreAdditionalProjectSources>
@@ -16,6 +16,12 @@
 
     <!--Override with your own game dir-->
     <GameDirectory Condition="'$(GameDirectory)' == ''">/mnt/fast/SteamLibrary/steamapps/common/Nuclear Option</GameDirectory>
+    
+    <!-- New property for the plugin deployment directory -->
+    <PluginDeploymentDirectory>$(GameDirectory)/BepInEx/plugins/MKMods</PluginDeploymentDirectory>
+    
+    <!-- Output path for zip file -->
+    <ZipOutputPath>$(OutputPath)Releases</ZipOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -44,9 +50,30 @@
     </Reference>
   </ItemGroup>
 
-  <!--Automatically copy MKMods.dll to game plugins-->
-  <Target Name="CopyToGame" AfterTargets="Build">
-    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(GameDirectory)/BepInEx/plugins" />
+  <!--Deployment Target with Directory Creation, File Copying, and Zipping-->
+  <Target Name="DeployMKMods" AfterTargets="Build">
+    <!-- Create MKMods directory in BepInEx plugins -->
+    <MakeDir Directories="$(PluginDeploymentDirectory)" />
+    
+    <!-- Copy DLL to MKMods directory -->
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" 
+          DestinationFolder="$(PluginDeploymentDirectory)" />
+    
+    <!-- Copy Assets folder to MKMods directory -->
+    <Copy SourceFiles="@(Assets)" 
+          DestinationFolder="$(PluginDeploymentDirectory)/Assets" 
+          Condition="Exists('Assets')" />
+    
+    <!-- Create Zip Output Directory -->
+    <MakeDir Directories="$(ZipOutputPath)" />
+    
+    <!-- Create Zip Archive -->
+    <Exec Command="zip -r '$(ZipOutputPath)/MKMods_v$(Version).zip' '$(PluginDeploymentDirectory)'" />
   </Target>
+
+  <!-- Ensure Assets are included in the project if they exist -->
+  <ItemGroup>
+    <Assets Include="Assets\**\*.*" Condition="Exists('Assets')" />
+  </ItemGroup>
 
 </Project>

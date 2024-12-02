@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using BepInEx;
@@ -21,6 +22,14 @@ public class Plugin : BaseUnityPlugin
     public static ConfigEntry<bool> ignoreAlreadySelected;
     public static ConfigEntry<bool> dynamicWeaponSelection;
     public static ConfigEntry<bool> hudNotchLine;
+
+    public static ConfigEntry<bool> missileVoiceWarnings;
+    public static ConfigEntry<bool> fuelWarnings;
+    public static ConfigEntry<float> fuelWarningMinutes;
+    public static ConfigEntry<float> bingoFuelMinutes;
+    public static ConfigEntry<float> fuelWarningUpdateRate;
+
+    public static string assetsPath;
 
     private void Awake()
     {
@@ -55,7 +64,6 @@ public class Plugin : BaseUnityPlugin
             true,
             "Enable the dynamic weapon selection menu."
         );
-
         hudNotchLine = Config.Bind(
             "HUD",
             "HudNotchLine",
@@ -63,11 +71,56 @@ public class Plugin : BaseUnityPlugin
             "Display a notch line on the HUD."
         );
 
+        missileVoiceWarnings = Config.Bind(
+            "Warnings",
+            "MissileVoiceWarnings",
+            true,
+            "Enable missile voice warnings."
+        );
 
+        fuelWarnings = Config.Bind(
+            "Warnings",
+            "FuelWarnings",
+            true,
+            "Enable fuel warnings."
+        );
+
+        fuelWarningMinutes = Config.Bind(
+            "Warnings",
+            "FuelWarningMinutes",
+            5f,
+            "The number of minutes of fuel remaining to trigger a fuel warning."
+        );
+
+        bingoFuelMinutes = Config.Bind(
+            "Warnings",
+            "BingoFuelMinutes",
+            1f,
+            "The number of minutes of fuel remaining to trigger a bingo fuel warning."
+        );
+
+        fuelWarningUpdateRate = Config.Bind(
+            "Warnings",
+            "FuelWarningUpdateRate",
+            10f,
+            "The number of seconds between fuel level updates."
+        );
+
+        var gamePath = Directory.GetParent(Application.dataPath).FullName;
+
+        assetsPath = Path.Combine(gamePath,
+            "BepInEx",
+            "plugins",
+            "MKMods",
+            "Assets"
+        );
 
         // Plugin startup logic
         Logger = base.Logger;
         Logger.LogInfo($"Plugin mkmods is loaded!");
+
+        MissileVoiceWarningGlobals.Initialize();
+        FuelWarningGlobals.Initialize();
 
         var harmony = new Harmony("xyz.huestudios.mk.mkmods");
         harmony.PatchAll();
